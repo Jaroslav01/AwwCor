@@ -1,6 +1,109 @@
-## [Swagger](https://awwcor.yushchenko.site/api/index.html?url=/api/specification.json)
+# [Swagger](https://awwcor.yushchenko.site/api/index.html?url=/api/specification.json) - https://awwcor.yushchenko.site/api
+
+# Description
+
+Domain
+```
+https://awwcor.yushchenko.site/
+```
 <br>
 
+## /api/Advertisement/CreateAd - POST
+``` c#
+public async Task<int> Handle(CreateAdvertisementCommand request, CancellationToken cancellationToken)
+    {
+        var entity = new Advertisement()
+        {
+            Title = request.Title,
+            Description = request.Description,
+            Amount = request.Amount,
+        };
+
+        entity.DomainEvents.Add(new AdvertisementCreatedEvent(entity));
+
+        _context.Advertisements.Add(entity);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        foreach (var imageUrl in request.ImagesUrl)
+        {
+            await _mediator.Send(new CreateImageCommand() { AdvertisementId = entity.Id, Url = imageUrl }, cancellationToken);
+        }
+        return entity.Id;
+    }
+```
+
+
+## /api/Advertisement/GetAdvertisementsWithPagination - PUT
+``` c#
+public async Task<PaginatedList<AdvertisementBriefDto>> Handle(GetAdvertisementsWithPaginationQuery request, CancellationToken cancellationToken)
+    {
+        PaginatedList<AdvertisementBriefDto>? advertisements = null;
+        if (request.OrderBy == EOrderByType.CreatedDate && request.OrderType == EOrderType.Increase)
+        {
+            advertisements = await _context.Advertisements
+                        .AsNoTracking()
+                        .OrderBy(x => x.Created)
+                        .ProjectTo<AdvertisementBriefDto>(_mapper.ConfigurationProvider)
+                        .PaginatedListAsync(request.PageNumber, request.PageSize);
+        }
+        else if (request.OrderBy == EOrderByType.CreatedDate && request.OrderType == EOrderType.Descending)
+        {
+            advertisements = await _context.Advertisements
+                        .AsNoTracking()
+                        .OrderByDescending(x => x.Created)
+                        .ProjectTo<AdvertisementBriefDto>(_mapper.ConfigurationProvider)
+                        .PaginatedListAsync(request.PageNumber, request.PageSize);
+        }
+        else if (request.OrderBy == EOrderByType.Amount && request.OrderType == EOrderType.Increase)
+        {
+            advertisements = await _context.Advertisements
+                        .AsNoTracking()
+                        .OrderByDescending(x => x.Amount)
+                        .ProjectTo<AdvertisementBriefDto>(_mapper.ConfigurationProvider)
+                        .PaginatedListAsync(request.PageNumber, request.PageSize);
+        }
+        else if(request.OrderBy == EOrderByType.Amount && request.OrderType == EOrderType.Descending)
+        {
+            advertisements = await _context.Advertisements
+                        .AsNoTracking()
+                        .OrderByDescending(x => x.Amount)
+                        .ProjectTo<AdvertisementBriefDto>(_mapper.ConfigurationProvider)
+                        .PaginatedListAsync(request.PageNumber, request.PageSize);
+        }
+
+        foreach (var item in advertisements.Items)
+        {
+            List<Image> images = new();
+            if(item.Images?.Count >= 1) images.Add(item.Images[0]);
+            item.Images = images;
+        }
+        return advertisements;
+    }
+```
+## /api/Advertisement/GetAdvertisementById - PUT
+``` c#
+public async Task<object> Handle(GetAdvertisementByIdQuery request, CancellationToken cancellationToken)
+    {
+        if (request.AllFields)
+        {
+            var advertisement = _context.Advertisements.FirstOrDefault(x => x.Id == request.Id);
+            if (advertisement != null) advertisement.Images = _context.Images.Where(x => x.AdvertisementId == advertisement.Id).ToList();
+            return advertisement;
+        }
+        else
+        {
+            return _context.Advertisements
+                .Where(x => x.Id == request.Id)
+                .Select(x => new AdvertisementAbbreviated
+                {
+                    Title = x.Title,
+                    Amount = x.Amount,
+                    Image = x.Images[0]
+                });
+        }
+    }
+```
 <img align="left" width="116" height="116" src="https://raw.githubusercontent.com/jasontaylordev/CleanArchitecture/main/.github/icon.png" />
  
  # Clean Architecture Solution Template
