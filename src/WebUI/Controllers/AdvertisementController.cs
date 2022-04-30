@@ -2,15 +2,12 @@
 using CleanArchitecture.Application.Advertisements.Queries.GetAdvertisementByIdQuery;
 using CleanArchitecture.Application.Advertisements.Queries.GetAdvertisementsWithPagination;
 using CleanArchitecture.Application.Common.Models;
-using CleanArchitecture.Application.Common.Security;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+
 public class AdvertisementController : ApiControllerBase
 {
     [HttpPost("CreateAd")]

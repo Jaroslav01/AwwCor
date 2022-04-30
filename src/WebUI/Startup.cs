@@ -55,19 +55,20 @@ public class Startup
 
         services.AddOpenApiDocument(configure =>
         {
-            configure.Title = "CleanArchitecture API";
+            configure.Title = "AwwCor Test";
+            configure.Description = "Made by Yaroslav Yushchenko";
             configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
             {
                 Type = OpenApiSecuritySchemeType.ApiKey,
                 Name = "Authorization",
                 In = OpenApiSecurityApiKeyLocation.Header,
-                Description = "Type into the textbox: Bearer {your JWT token}."
+                Description = "Type into the textbox: Bearer {your JWT token}.",
             });
 
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
-        
-         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
                         options.RequireHttpsMetadata = false;
@@ -81,25 +82,6 @@ public class Startup
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Identity:IssuerSigningKey"])),
                             ValidateIssuerSigningKey = Configuration.GetValue<bool>("Identity:ValidateIssuerSigningKey"),
                         };
-                        /*
-                        options.Events = new JwtBearerEvents
-                        {
-                            OnMessageReceived = context =>
-                            {
-                                var accessToken = context.Request.Query["access_token"];
-
-                                // If the request is for our hub...
-                                var path = context.HttpContext.Request.Path;
-                                if (!string.IsNullOrEmpty(accessToken) &&
-                                    (path.StartsWithSegments("/hub")))
-                                {
-                                    // Read the token out of the query string
-                                    context.Token = accessToken;
-                                }
-                                return Task.CompletedTask;
-                            }
-                        };
-                        */
                     });
     }
 
@@ -131,7 +113,7 @@ public class Startup
             settings.Path = "/api";
             settings.DocumentPath = "/api/specification.json";
         });
-
+        
         app.UseRouting();
 
         app.UseAuthentication();
