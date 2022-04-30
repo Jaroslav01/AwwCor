@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-md-9 mt-4">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <span class="h6">Filters:</span>
+      </div>
+      <form class="card-body d-flex justify-content-start" [formGroup]="filterForm">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="0" formControlName="orderBy" (click)="getAdvertisementsWithPagination(1)">
+                <label class="form-check-label" for="inlineRadio1">Amount</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="1" formControlName="orderBy" (click)="getAdvertisementsWithPagination(1)">
+                <label class="form-check-label" for="inlineRadio2">Date</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio3" value="0" formControlName="orderType" (click)="getAdvertisementsWithPagination(1)">
+                <label class="form-check-label" for="inlineRadio3">Increase</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio4" value="1" formControlName="orderType" (click)="getAdvertisementsWithPagination(1)">
+                <label class="form-check-label" for="inlineRadio4">Descending</label>
+              </div>
+            </div>
+            <div class="col">
+              <select class="form-select mr-2" aria-label="Default select example" formControlName="pageSize">
+                <option value="10" (click)="getAdvertisementsWithPagination(1)">10</option>
+                <option value="25" (click)="getAdvertisementsWithPagination(1)">25</option>
+                <option value="50" (click)="getAdvertisementsWithPagination(1)">50</option>
+                <option value="100" (click)="getAdvertisementsWithPagination(1)">100</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-3 mt-4">
+    <div class="card">
+      <div class="card-header">
+        <span class="h6">Create advertisement</span>
+      </div>
+      <div class="card-body">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Create advertisement
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<form (ngSubmit)="createAd()" [formGroup]="createAdForm" aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade"
+      id="exampleModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add advertisement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Label" aria-label="Label" maxlength="200" formControlName="label">
+          </div>
+          <div class="col">
+            <input type="number" class="form-control" placeholder="Amount" aria-label="Amount" formControlName="amount">
+          </div>
+        </div>
+        <ng-container formArrayName="images" class="card mt-4">
+          <ng-container class="card-body">
+            <span>Images links:</span>
+            <div class="input-group mt-4" *ngFor="let imageForm of images.controls; let i = index">
+              <div [formGroup]="imageForm">
+                <input type="text" class="form-control" placeholder="Link" aria-label="Recipient's username with two button addons">
+                <button class="btn btn-outline-secondary" type="button" (click)="deleteImage(i)" *ngIf="images.controls.length != 1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                  </svg>
+                </button>
+                <button class="btn btn-outline-secondary" type="button" (click)="addImage()" *ngIf="images.controls.length - 1 == i || images.controls.length == 1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+
+        <div class="form-floating mt-4">
+          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" maxlength="2000" style="height: 100px" formControlName="description"></textarea>
+          <label for="floatingTextarea2">Description</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="product-cards-container mt-4">
+  <div class="card shadow-sm" style="width: 18rem;" *ngFor="let item of paginatedListOfTodoItemBriefDto.items">
+    <img src="{{item.images[0].url}}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <div class="card-body-body">
+        <h5 class="card-title">{{item.title}}</h5>
+        <p class="card-text">{{item.description}}</p>
+      </div>
+    </div>
+    <div class="card-footer text-muted">
+<!--      <a href="#" class="btn btn-primary">Подробнее</a>-->
+      <span>{{item.amount | currency}}</span>
+      <button type="button" class="btn btn-primary d-flex align-items-center">
+        <span class="mr-2">More</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+          <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center mt-4">
+    <li class="page-item disabled">
+      <a class="page-link">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>

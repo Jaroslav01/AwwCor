@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.Application.Chats.Commands;
-using CleanArchitecture.Application.Chats.Queries.GetChatByCurrentUser;
-using CleanArchitecture.Application.User.Commands.CreateUser;
+﻿using CleanArchitecture.Application.User.Commands.CreateUser;
 using CleanArchitecture.Application.User.Queries.Dto;
 using CleanArchitecture.Application.User.Queries.GetCurrentUser;
 using CleanArchitecture.Application.User.Queries.GetJwtToken;
@@ -51,20 +49,4 @@ public class UserController : Controller
     {
         return await Mediator.Send(query);
     }
-    
-    /*
-    [Authorize]
-    [HttpPost("GetChatByCurrentUser")]
-    public async Task<List<Chat>> GetChatByCurrentUser(GetChatByCurrentUserQuery query)
-    {
-        return await Mediator.Send(query);
-    }
-    
-    [Authorize]
-    [HttpPost("CreateChat")]
-    public async Task<Guid> CreateChat(CreateChatCommand command)
-    {
-        return await Mediator.Send(command); 
-    }
-    */
 }

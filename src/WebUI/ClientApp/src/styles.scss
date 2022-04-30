@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+//import 'swiper/scss';
+//import 'swiper/scss/navigation';
+//import 'swiper/scss/pagination';
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #e01a76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+html, body{
+  background-color: #F2F4F5
+}
+
+.card{
+  border-radius: 1rem;
+}
+
+.card-footer{
+  border-bottom-left-radius: 1rem!important;
+  border-bottom-right-radius: 1rem!important;
+}
+.card-header{
+  border-top-left-radius: 1rem!important;
+  border-top-right-radius: 1rem!important;
+}

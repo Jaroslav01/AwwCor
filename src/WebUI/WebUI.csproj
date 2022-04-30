@@ -55,6 +55,17 @@
       <Folder Include="Pages\Shared" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="ClientApp\package-lock.json" />
+      <_ContentIncludedByDefault Remove="ClientApp\angular.json" />
+      <_ContentIncludedByDefault Remove="ClientApp\e2e\tsconfig.e2e.json" />
+      <_ContentIncludedByDefault Remove="ClientApp\src\tsconfig.app.json" />
+      <_ContentIncludedByDefault Remove="ClientApp\src\tsconfig.server.json" />
+      <_ContentIncludedByDefault Remove="ClientApp\src\tsconfig.spec.json" />
+      <_ContentIncludedByDefault Remove="ClientApp\src\tslint.json" />
+      <_ContentIncludedByDefault Remove="ClientApp\tslint.json" />
+    </ItemGroup>
+
     <PropertyGroup>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     </PropertyGroup>

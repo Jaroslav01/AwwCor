@@ -26,12 +26,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     }
     
     public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
-    public DbSet<Message> Messages => Set<Message>();
-    public DbSet<Chat> Chats => Set<Chat>();
-    public DbSet<ChatUser> ChatUsers => Set<ChatUser>();
-    public DbSet<Contact> Contacts => Set<Contact>();
-    public DbSet<Group> Groups => Set<Group>();
-    public DbSet<GroupUser> GroupUsers => Set<GroupUser>();
+    public DbSet<Image> Images => Set<Image>();
+    public DbSet<Advertisement> Advertisements => Set<Advertisement>();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {

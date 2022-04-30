@@ -6,18 +6,18 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/Chat/CreateChat": {
+    "/api/Advertisement/CreateAd": {
       "post": {
         "tags": [
-          "Chat"
+          "Advertisement"
         ],
-        "operationId": "Chat_CreateChat",
+        "operationId": "Advertisement_CreateAd",
         "requestBody": {
           "x-name": "command",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateChatCommand"
+                "$ref": "#/components/schemas/CreateAdvertisementCommand"
               }
             }
           },
@@ -29,79 +29,74 @@
             "description": "",
             "content": {
               "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Advertisement/GetAdvertisementsWithPagination": {
+      "put": {
+        "tags": [
+          "Advertisement"
+        ],
+        "operationId": "Advertisement_GetAdvertisementsWithPagination",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAdvertisementsWithPaginationQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfAdvertisementBriefDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Advertisement/GetAdvertisementById": {
+      "put": {
+        "tags": [
+          "Advertisement"
+        ],
+        "operationId": "Advertisement_GetAdvertisementById",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAdvertisementByIdQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
-                  "format": "guid"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Chat/GetChatByCurrentUser": {
-      "post": {
-        "tags": [
-          "Chat"
-        ],
-        "operationId": "Chat_GetChatByCurrentUser",
-        "requestBody": {
-          "x-name": "query",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetChatByCurrentUserQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Chat"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Chat/GetChatUsersByCurrentUser": {
-      "post": {
-        "tags": [
-          "Chat"
-        ],
-        "operationId": "Chat_GetChatUsersByCurrentUser",
-        "requestBody": {
-          "x-name": "query",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetChatUsersByCurrentUserQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChatUser"
-                  }
+                  "format": "binary"
                 }
               }
             }
@@ -260,165 +255,114 @@
   },
   "components": {
     "schemas": {
-      "CreateChatCommand": {
+      "CreateAdvertisementCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "contactId": {
-            "type": "string",
-            "format": "guid"
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "imagesUrl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
-      "Chat": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AuditableEntity"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "guid"
-              },
-              "name": {
-                "type": "string",
-                "nullable": true
-              },
-              "profilePicture": {
-                "type": "string",
-                "nullable": true
-              },
-              "status": {
-                "type": "string",
-                "nullable": true
-              },
-              "lastMessage": {
-                "type": "string",
-                "nullable": true
-              },
-              "unRead": {
-                "type": "string",
-                "nullable": true
-              },
-              "isActive": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "isTyping": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "messages": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Message"
-                }
-              },
-              "domainEvents": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/DomainEvent"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "Message": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AuditableEntity"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "guid"
-              },
-              "chatId": {
-                "type": "string",
-                "format": "guid",
-                "nullable": true
-              },
-              "groupId": {
-                "type": "string",
-                "format": "guid",
-                "nullable": true
-              },
-              "messageText": {
-                "type": "string",
-                "nullable": true
-              },
-              "name": {
-                "type": "string",
-                "nullable": true
-              },
-              "profile": {
-                "type": "string",
-                "nullable": true
-              },
-              "isToday": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "messageText2": {
-                "type": "string",
-                "nullable": true
-              },
-              "isImage": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "isFile": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "fileContent": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "fileSize": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "isTyping": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "imageContent": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "domainEvents": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/DomainEvent"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "DomainEvent": {
+      "PaginatedListOfAdvertisementBriefDto": {
         "type": "object",
-        "x-abstract": true,
         "additionalProperties": false,
         "properties": {
-          "isPublished": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdvertisementBriefDto"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
             "type": "boolean"
           },
-          "dateOccurred": {
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AdvertisementBriefDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "images": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          },
+          "created": {
             "type": "string",
             "format": "date-time"
           }
         }
+      },
+      "Image": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "advertisementId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       },
       "AuditableEntity": {
         "type": "object",
@@ -444,41 +388,62 @@
           }
         }
       },
-      "GetChatByCurrentUserQuery": {
+      "GetAdvertisementsWithPaginationQuery": {
         "type": "object",
-        "additionalProperties": false
-      },
-      "ChatUser": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AuditableEntity"
+        "additionalProperties": false,
+        "properties": {
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
           },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "guid"
-              },
-              "chatId": {
-                "type": "string",
-                "format": "guid"
-              },
-              "applicationUserId": {
-                "type": "string",
-                "format": "guid"
-              },
-              "name": {
-                "type": "string"
-              }
-            }
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderBy": {
+            "$ref": "#/components/schemas/EOrderByType"
+          },
+          "orderType": {
+            "$ref": "#/components/schemas/EOrderType"
           }
+        }
+      },
+      "EOrderByType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Amount",
+          "CreatedDate"
+        ],
+        "enum": [
+          0,
+          1
         ]
       },
-      "GetChatUsersByCurrentUserQuery": {
+      "EOrderType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Increase",
+          "Descending"
+        ],
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "GetAdvertisementByIdQuery": {
         "type": "object",
-        "additionalProperties": false
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "allFields": {
+            "type": "boolean"
+          }
+        }
       },
       "ApplicationUserDto": {
         "type": "object",
