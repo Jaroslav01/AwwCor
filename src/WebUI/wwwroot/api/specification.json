@@ -1,0 +1,594 @@
+{
+  "x-generator": "NSwag v13.14.4.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v9.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CleanArchitecture API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/Chat/CreateChat": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "operationId": "Chat_CreateChat",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChatCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Chat/GetChatByCurrentUser": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "operationId": "Chat_GetChatByCurrentUser",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetChatByCurrentUserQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Chat"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Chat/GetChatUsersByCurrentUser": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "operationId": "Chat_GetChatUsersByCurrentUser",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetChatUsersByCurrentUserQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatUser"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_Test",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/GetUserById": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_GetUserById",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetUserByIdQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationUserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/User/GetCurrentUser": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_GetCurrentUser",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationUserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/User/CreateUser": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_CreateUser",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/GetJwtToken": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_GetJwtToken",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetJwtTokenQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetJwtTokenQueryDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateChatCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "Chat": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "guid"
+              },
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "profilePicture": {
+                "type": "string",
+                "nullable": true
+              },
+              "status": {
+                "type": "string",
+                "nullable": true
+              },
+              "lastMessage": {
+                "type": "string",
+                "nullable": true
+              },
+              "unRead": {
+                "type": "string",
+                "nullable": true
+              },
+              "isActive": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "isTyping": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "messages": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              },
+              "domainEvents": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DomainEvent"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Message": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "guid"
+              },
+              "chatId": {
+                "type": "string",
+                "format": "guid",
+                "nullable": true
+              },
+              "groupId": {
+                "type": "string",
+                "format": "guid",
+                "nullable": true
+              },
+              "messageText": {
+                "type": "string",
+                "nullable": true
+              },
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "profile": {
+                "type": "string",
+                "nullable": true
+              },
+              "isToday": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "messageText2": {
+                "type": "string",
+                "nullable": true
+              },
+              "isImage": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "isFile": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "fileContent": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "fileSize": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "isTyping": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "imageContent": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "domainEvents": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DomainEvent"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "DomainEvent": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "isPublished": {
+            "type": "boolean"
+          },
+          "dateOccurred": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AuditableEntity": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GetChatByCurrentUserQuery": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ChatUser": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "guid"
+              },
+              "chatId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "applicationUserId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "GetChatUsersByCurrentUserQuery": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ApplicationUserDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "firstNmae": {
+            "type": "string"
+          },
+          "lastNmae": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        }
+      },
+      "GetUserByIdQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "CreateUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "GetJwtTokenQueryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "firstNmae": {
+            "type": "string"
+          },
+          "lastNmae": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "GetJwtTokenQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "type": "apiKey",
+        "description": "Type into the textbox: Bearer {your JWT token}.",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "JWT": []
+    }
+  ]
+}
